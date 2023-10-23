@@ -50,20 +50,20 @@ function App() {
         <form onSubmit={handleNewTaskSubmit}>
           <label>
             Task:
-            <input type="text" value={newTask} onChange={handleNewTaskChange} style={{ marginRight: '10px', padding: '5px' }} />
+            <input type="text" value={newTask} onChange={handleNewTaskChange} className="input" />
           </label>
           <label>
             Time:
-            <input type="text" value={newTime} onChange={handleNewTimeChange} style={{ marginRight: '10px', padding: '5px' }} />
+            <input type="text" value={newTime} onChange={handleNewTimeChange} className="input" />
           </label>
-          <button type="submit" style={{ padding: '5px 10px', backgroundColor: 'green', color: 'white', border: 'none' }}>Add Task</button>
+          <button type="submit" className="button add-button">Add Task</button>
         </form>
         <h2>Tasks:</h2>
         <ul>
           {tasks.map((task, index) => (
             <li key={index}>
               <strong>{task.time}:</strong> {task.task}
-              <button onClick={() => handleTaskDelete(index)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: 'red', color: 'white', border: 'none' }}>Delete</button>
+              <button onClick={() => handleTaskDelete(index)} className="button delete-button">Delete</button>
             </li>
           ))}
         </ul>

@@ -46,3 +46,24 @@
 .reset-button:hover {
   background-color: #444;
 }
+.input {
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.button {
+  padding: 5px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.add-button {
+  background-color: green;
+}
+
+.delete-button {
+  background-color: red;
+  margin-left: 10px;
+}
