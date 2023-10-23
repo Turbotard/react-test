@@ -10,7 +10,7 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState<string>('');
   const [newTime, setNewTime] = useState<string>('');
-
+  // tentative de garder en localstorage les taches mais qui ne fonctionne pas
   useEffect(() => {
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
@@ -30,6 +30,10 @@ function App() {
     setNewTime(event.target.value);
   };
 
+  /**
+   * Handles the submission of a new task by adding it to the tasks array and resetting the new task and time fields.
+   * @param event - The form submission event.
+   */
   const handleNewTaskSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setTasks([...tasks, { task: newTask, time: newTime }]);
