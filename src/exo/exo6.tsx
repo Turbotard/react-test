@@ -23,6 +23,9 @@ const Exo6: React.FC = () => {
 
   return (
     <div>
+      <div>
+        <h1>Liste de films(qui n'est pas issue de The Movie Database car impossible de se connecter)</h1>
+      </div>
       <input
         type="text"
         placeholder="Recherche..."
