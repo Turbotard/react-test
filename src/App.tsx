@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 interface Task {
+  id: string;
   task: string;
   time: string;
+  done: boolean;
 }
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState<string>('');
   const [newTime, setNewTime] = useState<string>('');
-  // tentative de garder en localstorage les taches mais qui ne fonctionne pas
+
   useEffect(() => {
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
@@ -30,44 +32,61 @@ function App() {
     setNewTime(event.target.value);
   };
 
-  /**
-   * Handles the submission of a new task by adding it to the tasks array and resetting the new task and time fields.
-   * @param event - The form submission event.
-   */
   const handleNewTaskSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setTasks([...tasks, { task: newTask, time: newTime }]);
+    const newTaskId = Date.now().toString();
+    setTasks([...tasks, { id: newTaskId, task: newTask, time: newTime, done: false }]);
     setNewTask('');
     setNewTime('');
   };
 
-  const handleTaskDelete = (index: number) => {
-    const newTasks = [...tasks];
-    newTasks.splice(index, 1);
+  const handleTaskDelete = (id: string) => {
+    const newTasks = tasks.filter(task => task.id !== id);
     setTasks(newTasks);
   };
+
+  const handleTaskDone = (id: string) => {
+    const newTasks = [...tasks];
+    const taskIndex = newTasks.findIndex(task => task.id === id);
+    newTasks[taskIndex].done = !newTasks[taskIndex].done;
+    setTasks(newTasks);
+  };
+
+  const notDoneTasks = tasks.filter(task => !task.done);
+  const doneTasks = tasks.filter(task => task.done);
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>To-Do List</h1>
-        <form onSubmit={handleNewTaskSubmit}>
+        <form onSubmit={handleNewTaskSubmit} className="add-task-form">
           <label>
             Task:
-            <input type="text" value={newTask} onChange={handleNewTaskChange} className="input" />
+            <input type="text" value={newTask} onChange={handleNewTaskChange} className="add-task-input" />
           </label>
           <label>
             Time:
-            <input type="text" value={newTime} onChange={handleNewTimeChange} className="input" />
+            <input type="text" value={newTime} onChange={handleNewTimeChange} className="add-task-input" />
           </label>
-          <button type="submit" className="button add-button">Add Task</button>
+          <button type="submit" className="add-task-button">Add Task</button>
         </form>
-        <h2>Tasks:</h2>
+        <h2>Not Done:</h2>
         <ul>
-          {tasks.map((task, index) => (
-            <li key={index}>
+          {notDoneTasks.map(task => (
+            <li key={task.id}>
+              <input type="checkbox" checked={task.done} onChange={() => handleTaskDone(task.id)} />
               <strong>{task.time}:</strong> {task.task}
-              <button onClick={() => handleTaskDelete(index)} className="button delete-button">Delete</button>
+              <button onClick={() => handleTaskDelete(task.id)} className="delete-button">Delete</button>
+            </li>
+          ))}
+        </ul>
+        <h2>Done:</h2>
+        <ul>
+          {doneTasks.map(task => (
+            <li key={task.id}>
+              <input type="checkbox" checked={task.done} onChange={() => handleTaskDone(task.id)} />
+              <strong>{task.time}:</strong> {task.task}
+              <button onClick={() => handleTaskDelete(task.id)} className="delete-button">Delete</button>
             </li>
           ))}
         </ul>
