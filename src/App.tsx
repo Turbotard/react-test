@@ -4,6 +4,7 @@ import './App.css';
 import Exo1 from './exo/exo1';
 import Exo2 from './exo/exo2';
 import Exo3 from './exo/exo3';
+import Exo5 from './exo/exo5';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,12 @@ const App: React.FC = () => {
             <li>
               <Link to="/exo3">Exo 3</Link>
             </li>
+            <li>
+              <Link to="/">Exo 4</Link> 
+            </li>
+            <li>
+              <Link to="/exo5">Exo 5</Link>
+            </li>
           </ul>
         </nav>
 
@@ -31,6 +38,7 @@ const App: React.FC = () => {
             <Route path="/exo2" element={<Exo2 />} />
             <Route path="/exo3" element={<Exo3 />} />
             <Route path="/exo3/:id" element={<Exo3 />} />
+            <Route path="/exo5" element={<Exo5 />} />
           </Routes>
         </div>
       </Router>
