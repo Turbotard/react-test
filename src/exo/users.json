@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "name": "Moi",
+      "age": 25,
+      "job": "Vraiment bien"
+    },
+    {
+        "id": 2,
+        "name": "Toi",
+        "age": 30,
+        "job": "Pas mal"
+        },
+        {
+        "id": 3,
+        "name": "Lui",
+        "age": 45,
+        "job": "Sympa"
+    }
+  ]
+  
