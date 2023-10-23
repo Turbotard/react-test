@@ -1,0 +1,98 @@
+[
+    {
+        "id": 1,
+        "name": "Le Fabuleux Destin d'Amélie Poulain",
+        "description": "Une jeune femme timide et imaginative décide de changer la vie des gens autour d'elle pour le mieux."
+    },
+    {
+        "id": 2,
+        "name": "La Haine",
+        "description": "Un film sur la vie de trois jeunes issus de l'immigration dans les banlieues de Paris."
+    },
+    {
+        "id": 3,
+        "name": "Intouchables",
+        "description": "L'histoire d'une amitié improbable entre un aristocrate tétraplégique et un jeune homme de banlieue."
+    },
+    {
+        "id": 4,
+        "name": "Le Seigneur des Anneaux : La Communauté de l'Anneau",
+        "description": "Un jeune hobbit doit détruire un anneau magique pour sauver la Terre du Milieu."
+    },
+    {
+        "id": 5,
+        "name": "Le Hobbit : Un voyage inattendu",
+        "description": "Un hobbit est entraîné dans une quête pour récupérer un trésor volé par un dragon."
+    },
+    {
+        "id": 6,
+        "name": "La Grande Vadrouille",
+        "description": "Deux hommes tentent d'aider des aviateurs britanniques à échapper aux nazis pendant la Seconde Guerre mondiale."
+    },
+    {
+        "id": 7,
+        "name": "Les Choristes",
+        "description": "Un professeur de musique transforme la vie d'un groupe d'enfants difficiles dans un internat pour garçons."
+    },
+    {
+        "id": 8,
+        "name": "Le Dîner de Cons",
+        "description": "Un groupe d'amis organise un dîner où chacun doit amener un invité idiot, mais les choses ne se passent pas comme prévu."
+    },
+    {
+        "id": 9,
+        "name": "Le Père Noël est une ordure",
+        "description": "Les employés d'une ligne d'assistance téléphonique pour les personnes seules pendant les fêtes de Noël ont une nuit mouvementée."
+    },
+    {
+        "id": 10,
+        "name": "Le Prénom",
+        "description": "Un dîner de famille tourne mal lorsque le prénom du futur bébé est révélé."
+    },
+    {
+        "id": 11,
+        "name": "The Godfather",
+        "description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son."
+    },
+    {
+        "id": 12,
+        "name": "The Shawshank Redemption",
+        "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."
+    },
+    {
+        "id": 13,
+        "name": "The Dark Knight",
+        "description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice."
+    },
+    {
+        "id": 14,
+        "name": "Forrest Gump",
+        "description": "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate, and other historical events unfold through the perspective of an Alabama man with an IQ of 75."
+    },
+    {
+        "id": 15,
+        "name": "The Matrix",
+        "description": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers."
+    },
+    {
+        "id": 16,
+        "name": "Star Wars: Episode IV - A New Hope",
+        "description": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle station, while also attempting to rescue Princess Leia from the mysterious Darth Vader."
+    },
+    {
+        "id": 17,
+        "name": "The Silence of the Lambs",
+        "description": "A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims."
+    },
+    {
+        "id": 18,
+        "name": "The Lord of the Rings: The Fellowship of the Ring",
+        "description": "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron."
+    },
+    {
+        "id": 19,
+        "name": "Le transporteur",
+        "description": "Frank, un as du volant, accepte, contre de coquettes rétributions, de convoyer des colis douteux sans poser de questions. Il respecte les règles du milieu, ne se fait jamais attraper et entretient des rapports très courtois avec Tarconi, un policier. En attendant, Frank vit confortablement à Nice, en bord de mer."
+    }
+    
+]
