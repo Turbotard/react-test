@@ -35,13 +35,11 @@ const App: React.FC = () => {
           </ul>
         </nav>
 
-        {/* Configuration des routes */}
         <div className="App-header">
           <Routes>
             <Route path="/exo1" element={<Exo1 />} />
             <Route path="/exo2" element={<Exo2 />} />
-            <Route path="/exo3" element={<Exo3 />} />
-            <Route path="/exo3/:id" element={<Exo3 />} />
+            <Route path="/exo3/*" element={<Exo3 />} />
             <Route path="/exo5" element={<Exo5 />} />
             <Route path="/exo6" element={<Exo6 />} />
           </Routes>
