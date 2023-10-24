@@ -1,69 +1,56 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../App.css';
 
 const RechercheFilms: React.FC = () => {
     const [query, setQuery] = useState("");
     const [films, setFilms] = useState<any[]>([]);
-    const [allFetchedFilms, setAllFetchedFilms] = useState<any[]>([]);
     const [totalResults, setTotalResults] = useState(0);
-    const [descriptionId, setDescriptionId] = useState<number | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+
     const location = useLocation();
     const navigate = useNavigate();
 
-    const [currentPage, setCurrentPage] = useState(1);
-
     const fetchFilms = useCallback(async (q: string, page: number = 1) => {
-        const apiPage = Math.ceil(page / 2);
-        if (allFetchedFilms.length < apiPage * 20) {
-            const response = await fetch(`http://localhost:5001/search?query=${q}&page=${apiPage}`);
-            const data = await response.json();
-            setAllFetchedFilms(prev => [...prev, ...data.results]);
-            setTotalResults(data.total_results);
-        }
-    }, [allFetchedFilms]);
+        const response = await fetch(`http://localhost:5001/search?query=${q}&page=${page}`);
+        const data = await response.json();
+        const slicedData = data.results.slice((page - 1) * 10, page * 10);
+        setFilms(slicedData);
+        setTotalResults(data.total_results);
+    }, []);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const q = searchParams.get('q');
         const page = Number(searchParams.get('page')) || 1;
-        if (q) {
-            setQuery(q);
-            fetchFilms(q, page);
-        }
+
+        setQuery(q || "");
+        fetchFilms(q || "", page);
         setCurrentPage(page);
+
     }, [location.search, fetchFilms]);
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const q = searchParams.get('q');
-        const page = Number(searchParams.get('page')) || 1;
-        setCurrentPage(page);
-    
-        const fetchAndSetMovies = async () => {
-            if (q) {
-                const apiPage = Math.ceil(page / 2); // Determine which API page to fetch based on current user page.
-                const response = await fetch(`http://localhost:5001/search?query=${q}&page=${apiPage}`);
-                const data = await response.json();
-                setTotalResults(data.total_results);
-    
-                if (page % 2 === 1) { 
-                    // If user's current page is odd, show first 10 films from the API results.
-                    setFilms(data.results.slice(0, 10));
-                } else {
-                    // If user's current page is even, show last 10 films from the API results.
-                    setFilms(data.results.slice(10, 20));
-                }
+        // Cancel the previous timeout if the user types something
+        if (searchTimeout) {
+            clearTimeout(searchTimeout);
+        }
+
+        // Create a new 2 seconds delay to trigger the search
+        const timeoutId = setTimeout(() => {
+            if (query !== "") {
+                navigate(`/film?q=${query}&page=1`);
             }
-        };
-    
-        fetchAndSetMovies();
-    }, [location.search, fetchFilms]);
-    
+        }, 1000);  // Trigger after 2 seconds
 
-    const handleSearch = () => {
-        navigate(`/film?q=${query}&page=1`); // Reset to page 1 for a new search
-    };
+        // Update the timeout state to be able to clear it on the next input
+        setSearchTimeout(timeoutId);
+
+        // Cleanup the timeout if the component is unmounted to prevent issues
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [query, navigate]);
 
     const handleNextPage = () => {
         const nextPage = currentPage + 1;
@@ -81,6 +68,7 @@ const RechercheFilms: React.FC = () => {
         }
     };
 
+    const [descriptionId, setDescriptionId] = useState<number | null>(null);
     const handleDescriptionClick = (movieid: number) => {
         if (descriptionId === movieid) {
             setDescriptionId(null);
@@ -90,6 +78,7 @@ const RechercheFilms: React.FC = () => {
     }
 
     const totalPages = Math.ceil(totalResults / 10);
+
     return (
         <div>
             <input
@@ -98,7 +87,7 @@ const RechercheFilms: React.FC = () => {
                 value={query}
                 onChange={e => setQuery(e.target.value)}
             />
-            <button onClick={handleSearch}>Rechercher</button>
+            <button onClick={() => navigate(`/film?q=${query}&page=1`)}>Rechercher</button>
 
             <div className="table-container">
                 <table>
@@ -109,6 +98,7 @@ const RechercheFilms: React.FC = () => {
                             <th>Date de publication</th>
                             <th>Acteurs</th>
                             <th>Revenu généré</th>
+                            <th>Top vente</th>
                             <th>Description</th>
                         </tr>
                     </thead>
