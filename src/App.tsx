@@ -8,7 +8,9 @@ import Exo2 from './exo/exo2';
 import Exo3 from './exo/exo3';
 import Exo5 from './exo/exo5';
 import Exo6 from './exo/exo6';
+import Film from './exo/film';
 import { UserProvider, useUser } from './exo/components/usercontext';
+import RechercheFilms from './exo/film';
 
 
 const App: React.FC = () => {
@@ -39,6 +41,9 @@ const App: React.FC = () => {
             <li>
               <Link to="/exo6">Exo 6</Link>
             </li>
+            <li>
+              <Link to="/film">Films</Link>
+            </li>
           </ul>
         </nav>
 
@@ -51,6 +56,7 @@ const App: React.FC = () => {
             <Route path="/exo3/*" element={<Exo3 />} />
             <Route path="/exo5" element={<Exo5 />} />
             <Route path="/exo6" element={<Exo6 />} />
+            <Route path="/film" element={<RechercheFilms />} />
           </Routes>
         </div>
       </Router>
