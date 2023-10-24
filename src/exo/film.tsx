@@ -4,31 +4,81 @@ import '../App.css';
 
 const RechercheFilms: React.FC = () => {
     const [query, setQuery] = useState("");
-    const [films, setFilms] = useState([]);
+    const [films, setFilms] = useState<any[]>([]);
+    const [allFetchedFilms, setAllFetchedFilms] = useState<any[]>([]);
+    const [totalResults, setTotalResults] = useState(0);
     const [descriptionId, setDescriptionId] = useState<number | null>(null);
     const location = useLocation();
     const navigate = useNavigate();
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
 
     const fetchFilms = useCallback(async (q: string, page: number = 1) => {
-        const response = await fetch(`http://localhost:5001/search?query=${q}&page=${page}`);
-        const data = await response.json();
-        setFilms(data.results.slice(0, itemsPerPage)); // Taking only the first 10 results for the current page.
-    }, []);
+        const apiPage = Math.ceil(page / 2);
+        if (allFetchedFilms.length < apiPage * 20) {
+            const response = await fetch(`http://localhost:5001/search?query=${q}&page=${apiPage}`);
+            const data = await response.json();
+            setAllFetchedFilms(prev => [...prev, ...data.results]);
+            setTotalResults(data.total_results);
+        }
+    }, [allFetchedFilms]);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const q = searchParams.get('q');
+        const page = Number(searchParams.get('page')) || 1;
         if (q) {
             setQuery(q);
-            fetchFilms(q, currentPage);
+            fetchFilms(q, page);
         }
-    }, [location.search, fetchFilms, currentPage]);
+        setCurrentPage(page);
+    }, [location.search, fetchFilms]);
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const q = searchParams.get('q');
+        const page = Number(searchParams.get('page')) || 1;
+        setCurrentPage(page);
+    
+        const fetchAndSetMovies = async () => {
+            if (q) {
+                const apiPage = Math.ceil(page / 2); // Determine which API page to fetch based on current user page.
+                const response = await fetch(`http://localhost:5001/search?query=${q}&page=${apiPage}`);
+                const data = await response.json();
+                setTotalResults(data.total_results);
+    
+                if (page % 2 === 1) { 
+                    // If user's current page is odd, show first 10 films from the API results.
+                    setFilms(data.results.slice(0, 10));
+                } else {
+                    // If user's current page is even, show last 10 films from the API results.
+                    setFilms(data.results.slice(10, 20));
+                }
+            }
+        };
+    
+        fetchAndSetMovies();
+    }, [location.search, fetchFilms]);
+    
 
     const handleSearch = () => {
-        navigate(`/film?q=${query}`);
+        navigate(`/film?q=${query}&page=1`); // Reset to page 1 for a new search
+    };
+
+    const handleNextPage = () => {
+        const nextPage = currentPage + 1;
+        fetchFilms(query, nextPage);
+        navigate(`/film?q=${query}&page=${nextPage}`);
+        setCurrentPage(nextPage);
+    };
+
+    const handlePrevPage = () => {
+        const prevPage = currentPage - 1;
+        if (prevPage >= 1) {
+            fetchFilms(query, prevPage);
+            navigate(`/film?q=${query}&page=${prevPage}`);
+            setCurrentPage(prevPage);
+        }
     };
 
     const handleDescriptionClick = (movieid: number) => {
@@ -37,18 +87,9 @@ const RechercheFilms: React.FC = () => {
         } else {
             setDescriptionId(movieid);
         }
-    };
+    }
 
-    const handleNextPage = () => {
-        setCurrentPage(prev => prev + 1);
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(prev => prev - 1);
-        }
-    };
-
+    const totalPages = Math.ceil(totalResults / 10);
     return (
         <div>
             <input
@@ -68,7 +109,6 @@ const RechercheFilms: React.FC = () => {
                             <th>Date de publication</th>
                             <th>Acteurs</th>
                             <th>Revenu généré</th>
-                            <th>Top vente</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -81,7 +121,9 @@ const RechercheFilms: React.FC = () => {
                                     <td>{movie.release_date}</td>
                                     <td>{movie.vote_average}</td>
                                     <td>{movie.vote_count}</td>
-                                    <td><button onClick={() => handleDescriptionClick(movie.id)}>Description</button></td>
+                                    <td>
+                                        <button onClick={() => handleDescriptionClick(movie.id)}>Description</button>
+                                    </td>
                                 </tr>
                                 {descriptionId === movie.id && (
                                     <tr>
@@ -96,8 +138,8 @@ const RechercheFilms: React.FC = () => {
 
             <div className="pagination">
                 <button disabled={currentPage === 1} onClick={handlePrevPage}>Précédent</button>
-                <span>Page {currentPage}</span>
-                <button disabled={films.length < itemsPerPage} onClick={handleNextPage}>Suivant</button>
+                <span>Page {currentPage} de {totalPages}</span>
+                <button disabled={currentPage === totalPages} onClick={handleNextPage}>Suivant</button>
             </div>
         </div>
     );
